@@ -6,7 +6,7 @@ from Main import get_conv
 from keras.layers import Flatten
 
 
-def train_waldo_model(data_path='Data', epochs=15, test_size=0.10, save_path='Models/localize_trained_2.h5'):
+def train_waldo_model(data_path='Data', epochs=15, test_size=0.10, save_path=None):
     """
     Train a model to classify Waldo vs NotWaldo images from scratch.
     
