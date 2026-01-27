@@ -78,8 +78,17 @@ def generating_waldos(use_background=True, variations_per_combo=2):
                 os.makedirs(os.path.join(data_path, "NotWaldo"), exist_ok=True)
                 os.makedirs(os.path.join(data_path, "Waldo"), exist_ok=True)
                 
+                # Convert RGBA to RGB before saving as JPEG
+                if cropped.mode == 'RGBA':
+                    cropped = cropped.convert('RGB')
+                
                 cropped.save(os.path.join(data_path, "NotWaldo", "n" + str(im_num) + ".jpg"))
                 cropped.paste(foreground, (frg_x, frg_y), foreground)
+                
+                # Convert RGBA to RGB before saving as JPEG
+                if cropped.mode == 'RGBA':
+                    cropped = cropped.convert('RGB')
+                    
                 cropped.save(os.path.join(data_path, "Waldo", str(im_num)+str(use_background) + ".jpg"))
                 im_num += 1
     
