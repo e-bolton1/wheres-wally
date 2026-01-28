@@ -37,7 +37,7 @@ model = get_conv()
 model.add(Flatten())
 model.compile(loss='mse', optimizer='adadelta', metrics=['accuracy'])
 
-heatmodel = get_conv(input_shape=(None, None, 3), filename="Models/localize7.h5")
+heatmodel = get_conv(input_shape=(None, None, 3), filename="/workspaces/wheres-wally/Models/localize7.h5")
 
 
 # Store a 64x64 image (hopefully) without Waldo in it
