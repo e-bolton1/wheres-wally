@@ -102,9 +102,10 @@ def color_gray(image, heatmap, gray):
 
 
 # Predict all test images
-for img in os.listdir("Data/Raw/Test/"):
-    try:
-        image, annotated, heatmap = locate(img, filepath="Data/Raw/Test/")
-        Image.fromarray(np.hstack((image, annotated, heatmap))).show()
-    except Exception as e:
-        print('exception', e)
+if __name__ == "__main__":
+    for img in os.listdir("Data/Raw/Test/"):
+        try:
+            image, annotated, heatmap = locate(img, filepath="Data/Raw/Test/")
+            Image.fromarray(np.hstack((image, annotated, heatmap))).show()
+        except Exception as e:
+            print('exception', e)
