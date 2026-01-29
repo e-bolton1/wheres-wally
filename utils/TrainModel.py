@@ -9,7 +9,7 @@ from keras.layers import Flatten, Dense
 import keras.backend as K
 
 
-def train_waldo_model(data_path='Data', epochs=15, test_size=0.10, save_path=None, img_size=64):
+def train_waldo_model(data_path='Data', epochs=15, test_size=0.10, save_path=None, img_size=128):
     """
     Train a model to classify Waldo vs NotWaldo images from scratch.
     
@@ -96,7 +96,7 @@ def train_waldo_model(data_path='Data', epochs=15, test_size=0.10, save_path=Non
     print("\nTraining model...")
     training_start_time = time.time()
     # Reduced batch size to 8 to prevent memory crashes
-    model.fit(X_train, Y_train, batch_size=8, epochs=epochs, verbose=1, validation_data=(X_test, Y_test))
+    model.fit(X_train, Y_train, batch_size=16, epochs=epochs, verbose=1, validation_data=(X_test, Y_test))
     training_end_time = time.time()
     training_duration = training_end_time - training_start_time
     
