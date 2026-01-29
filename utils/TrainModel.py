@@ -44,7 +44,7 @@ def train_waldo_model(data_path='Data', epochs=15, test_size=0.10, save_path=Non
             try:
                 img = Image.open(img_path).convert('RGB')
                 img = img.resize((img_size, img_size))
-                img_array = np.array(img, dtype=np.float32) / 255.0  # Normalize to [0,1]
+                img_array = np.array(img, dtype=np.float32)  # Keep 0-255; model normalizes internally
                 X.append(img_array)
                 Y.append(1)
             except Exception as e:
@@ -57,7 +57,7 @@ def train_waldo_model(data_path='Data', epochs=15, test_size=0.10, save_path=Non
             try:
                 img = Image.open(img_path).convert('RGB')
                 img = img.resize((img_size, img_size))
-                img_array = np.array(img, dtype=np.float32) / 255.0  # Normalize to [0,1]
+                img_array = np.array(img, dtype=np.float32)  # Keep 0-255; model normalizes internally
                 X.append(img_array)
                 Y.append(0)
             except Exception as e:
@@ -91,14 +91,18 @@ def train_waldo_model(data_path='Data', epochs=15, test_size=0.10, save_path=Non
     model = get_conv(input_shape=(img_size, img_size, 3), filename=None)  # Use fixed image size
     model.add(Flatten())
     model.add(Dense(1, activation='sigmoid'))  # Binary classification output
-    model.compile(loss='binary_crossentropy', optimizer='adadelta', metrics=['accuracy'])
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     
     print("\nTraining model...")
     training_start_time = time.time()
-    # Reduced batch size from 32 to 16 to reduce memory usage
-    model.fit(X_train, Y_train, batch_size=16, epochs=epochs, verbose=1, validation_data=(X_test, Y_test))
+    # Reduced batch size to 8 to prevent memory crashes
+    model.fit(X_train, Y_train, batch_size=8, epochs=epochs, verbose=1, validation_data=(X_test, Y_test))
     training_end_time = time.time()
     training_duration = training_end_time - training_start_time
+    
+    # Clear training data from memory after training
+    del X_train, Y_train
+    gc.collect()
     
     # Evaluate
     score = model.evaluate(X_test, Y_test, verbose=0)
